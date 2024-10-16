@@ -41,3 +41,13 @@ nav a {
 nav a:hover {
   color: #03DAC6;
 }
+
+@font-face {
+  font-family: 'Horizon';
+  src: url('horizon.otf') format('opentype');
+}
+
+body {
+  font-family: 'Horizon', serif;
+}
+

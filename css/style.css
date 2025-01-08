@@ -208,6 +208,21 @@ body {
   padding: 2rem;
 }
 
+.footer {
+  position: relative;
+  background: linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(0, 0, 0) 50%);
+  height: 25vh;
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-top: 10%;
+  text-align: left;
+}
+
+.text-container {
+  display: flex;
+  justify-content: space-between;
+}
+
 /* Typography */
 h1 {
   font-size: 5rem;
@@ -217,15 +232,36 @@ h1 {
   text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
 }
 
+h2 {
+  font-size: 3rem;
+  font-family: 'Chillax-Medium', sans-serif;
+  margin-bottom: 0.2em;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.bio-container {
+  background: white;
+  padding-right: 15%;
+  padding-left: 15%;
+  padding-top: 1rem;
+}
+
 .bio {
-  max-width: 800px;
   font-family: 'Chillax-Regular', sans-serif;
-  margin: 0 auto;
   font-size: 1.5rem;
   text-align: center;
-  color: #fff;
+  color: black;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   line-height: 1.8;
+}
+
+.footer-bio {
+  font-family: 'Chillax-Regular', sans-serif;
+  font-size: 1rem;
+  margin-bottom: 2.5%;
+  text-align: left;
+  line-height: 1.4;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 /* Responsive Design */

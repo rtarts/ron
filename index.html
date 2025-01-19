@@ -19,6 +19,22 @@
   <div class="carousel">
     <div class="carousel-slide active">
       <div class="background-blur" style="background-image: url('AMG1.jpg')"></div>
+      <img src="BMW 330i.jpg" alt="Photo of an BMW">
+    </div>
+    <div class="carousel-slide">
+      <div class="background-blur" style="background-image: url('Lexus1.jpg')"></div>
+      <img src="BMW Steering.jpg" alt="Photo of a Steering Wheel">
+    </div>
+    <div class="carousel-slide">
+      <div class="background-blur" style="background-image: url('Lexus1.jpg')"></div>
+      <img src="Lexus1.jpg" alt="Photo of a Lexus">
+    </div>
+    <div class="carousel-slide">
+      <div class="background-blur" style="background-image: url('Lexus2.jpg')"></div>
+      <img src="Lexus2.jpg" alt="Photo of a Lexus">
+    </div>
+    <div class="carousel-slide">
+      <div class="background-blur" style="background-image: url('AMG1.jpg')"></div>
       <img src="AMG1.jpg" alt="Photo of an AMG">
     </div>
     <div class="carousel-slide">
@@ -30,20 +46,12 @@
       <img src="BMW2.jpg" alt="Photo of a BMW">
     </div>
     <div class="carousel-slide">
-      <div class="background-blur" style="background-image: url('Lexus1.jpg')"></div>
-      <img src="Lexus1.jpg" alt="Photo of a Lexus">
-    </div>
-    <div class="carousel-slide">
-      <div class="background-blur" style="background-image: url('Lexus2.jpg')"></div>
-      <img src="Lexus2.jpg" alt="Photo of a Lexus">
-    </div>
-    <div class="carousel-slide">
       <div class="background-blur" style="background-image: url('M340i.jpg')"></div>
       <img src="M340i.jpg" alt="Photo of an BMW">
     </div>
     <div class="carousel-slide">
       <div class="background-blur" style="background-image: url('AMG1.jpg')"></div>
-      <img src="AMG1.jpg" alt="Photo of an AMG">
+      <img src="BMW 330i.jpg" alt="Photo of an BMW">
     </div>
   </div>
 </div>
@@ -52,20 +60,44 @@
   <h1 class="hover-target">Ronald's Portfolio</h1>
 </div>
 
-<div class="spacer"><h1 class="grid-container hover-target">My Photos.</h1></div>
+<div class="spacer"><h1 class="masonry-title hover-target">My Photos.</h1></div>
 
-<div class="grid-container">
-  <div class="grid-item hover-target"><img class="photo" src="Audi1.jpg" alt="Photo 1"></div>
-  <div class="grid-item hover-target"><img class="photo" src="Audi2.jpg" alt="Photo 2"></div>
-  <div class="grid-item hover-target"><img class="photo" src="Bus.jpg" alt="Photo 3"></div>
-  <div class="grid-item hover-target"><img class="photo" src="Ferrari1.jpg" alt="Photo 4"></div>
-  <div class="grid-item hover-target"><img class="photo" src="Hayabusa.jpg" alt="Photo 5"></div>
-  <div class="grid-item hover-target"><img class="photo" src="Porsche1.jpg" alt="Photo 6"></div>
-  <div class="grid-item hover-target"><img class="photo" src="Porsche2.jpg" alt="Photo 7"></div>
-  <div class="grid-item hover-target"><img class="photo" src="Lexus3.jpg" alt="Photo 8"></div>
-  <div class="grid-item hover-target"><img class="photo" src="Lexus4.jpg" alt="Photo 9"></div>
-  <div class="grid-item hover-target"><img class="photo" src="Lexus5.jpg" alt="Photo 10"></div>
-</div>
+  <div class="masonry-grid">
+    <div class="masonry-item hover-target" style="grid-row: span 2; grid-column: span 2;">
+      <img class="photo" src="Audi1.jpg" alt="Photo 1">
+    </div>
+    <div class="masonry-item hover-target" style="grid-row: span 3; grid-column: span 3;">
+      <img class="photo" src="Audi2.jpg" alt="Photo 2">
+    </div>
+    <div class="masonry-item hover-target" style="grid-row: span 3; grid-column: span 3;">
+      <img class="photo" src="Bus.jpg" alt="Photo 3">
+    </div>
+    <div class="masonry-item hover-target" style="grid-row: span 2; grid-column: span 2;">
+      <img class="photo" src="Ferrari1.jpg" alt="Photo 4">
+    </div>
+    <div class="masonry-item hover-target" style="grid-row: span 2; grid-column: span 2;">
+      <img class="photo" src="Hayabusa.jpg" alt="Photo 5">
+    </div>
+    <div class="masonry-item hover-target" style="grid-row: span 3; grid-column: span 2;">
+      <img class="photo" src="Porsche1.jpg" alt="Photo 6">
+    </div>
+    <div class="masonry-item hover-target" style="grid-row: span 3; grid-column: span 3;">
+      <img class="photo" src="Porsche2.jpg" alt="Photo 7">
+    </div>
+    <div class="masonry-item hover-target" style="grid-row: span 3; grid-column: span 2;">
+      <img class="photo" src="Lexus3.jpg" alt="Photo 8">
+    </div>
+    <div class="masonry-item hover-target" style="grid-row: span 3; grid-column: span 2;">
+      <img class="photo" src="Lexus4.jpg" alt="Photo 9">
+    </div>
+    <div class="masonry-item hover-target" style="grid-row: span 6; grid-column: span 4;">
+      <img class="photo" src="BMW HL.jpg" alt="Photo 10">
+    </div>
+    <div class="masonry-item hover-target" style="grid-row: span 4; grid-column: span 3;">
+      <img class="photo" src="Cooper Vertical.jpg" alt="Photo 11">
+    </div>
+  </div>
+
 
 <div class="bio-container"><p class="bio hover-target">I'm an automotive photographer who loves capturing the beauty and
   soul of cars. My goal is to create images that evoke emotion and help you relive those special moments. More to come.</p></div>
@@ -80,5 +112,10 @@
 
 <script src="js/script.js"></script>
 <script src="js/scroll grid.js"></script>
+<script src="js/fullscreen.js"></script>
+<div class="fullscreen-overlay" id="fullscreenOverlay">
+  <button class="close-button" id="closeButton">✖</button>
+  <img id="fullscreenImage" src="" alt="Fullscreen View">
+</div>
 </body>
 </html>

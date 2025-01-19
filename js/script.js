@@ -36,3 +36,5 @@ setInterval(() => {
   nextSlide();
   handleEndOfSlide(); // Check if we've reached the end to handle looping smoothly
 }, 3000);
+
+

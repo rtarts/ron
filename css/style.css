@@ -49,30 +49,43 @@
   z-index: 1000;
 }
 
+.masonry-title {
+  max-width: fit-content;
+  margin-inline: auto;
+}
+
 /* grid shit */
-.grid-container {
+.masonry-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Flexible column layout */
+  grid-auto-rows: 150px; /* Base height of rows */
+  gap: 16px; /* Space between items */
   padding: 20px;
-  margin: 0 auto;
-  opacity: 100%;
-  z-index: auto;
   background-color: white;
 }
 
-.grid-item {
+.masonry-item {
   position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  overflow: hidden; /* Ensures zoom stays within bounds */
+  border-radius: 8px; /* Smooth corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+  transform: translateY(100px); /* Initial for scroll animation */
+  opacity: 0; /* Initial opacity for animation */
+  transition: transform 0.7s ease-in-out, opacity 0.5s ease-in-out; /* For scroll animation */
 }
 
-.grid-item img {
+.masonry-item img {
   width: 100%;
   height: 100%;
+  object-fit: cover; /* Ensures images fill their containers */
   display: block;
+  transition: transform 0.3s ease-in-out; /* Smooth zoom effect */
 }
+
+.masonry-item:hover img {
+  transform: scale(1.1); /* Slightly larger zoom effect */
+}
+
 
 /* font family stuff */
 @font-face {
@@ -302,3 +315,57 @@ h2 {
     padding: 0 1rem;
   }
 }
+
+/* Fullscreen overlay styles */
+.fullscreen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.9); /* Dark background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.fullscreen-overlay img {
+  max-width: 90%;
+  max-height: 90%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  transform: scale(0.8); /* Start smaller */
+  transition: transform 0.3s ease-in-out;
+}
+
+.fullscreen-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.fullscreen-overlay.active img {
+  transform: scale(1); /* Smoothly zoom to full size */
+}
+
+/* Close button styles */
+.fullscreen-overlay .close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
+  transition: transform 0.2s ease-in-out;
+}
+
+.fullscreen-overlay .close-button:hover {
+  transform: scale(1.2);
+}
+

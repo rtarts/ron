@@ -12,25 +12,21 @@ window.addEventListener('scroll', () => {
         // Interpolate values based on scroll progress
         const blurValue = 5 - progress * 5; // From 10px to 0px
         const borderRadiusValue = 50 - progress * 50; // From 50% to 0%
-        const heightValue = 175 + progress * 25; // From 150px to 200px
         const opacityValue = 0.5 + progress * 0.5; // From 0.5 to 1
 
         // Apply styles
         footer.style.filter = `blur(${blurValue}px)`;
         footer.style.borderRadius = `${borderRadiusValue}% ${borderRadiusValue}% 0 0`;
-        footer.style.height = `${heightValue}px`;
         footer.querySelector('p').style.opacity = opacityValue;
     } else if (scrollY < footerTop) {
         // Before the footer is in view (reset to initial state)
         footer.style.filter = 'blur(5px)';
         footer.style.borderRadius = '50% 50% 0 0';
-        footer.style.height = '175px';
         footer.querySelector('p').style.opacity = '0.5';
     } else {
         // After fully scrolling over the footer (final state)
         footer.style.filter = 'blur(0px)';
         footer.style.borderRadius = '0%';
-        footer.style.height = '200px';
         footer.querySelector('p').style.opacity = '1';
     }
 });

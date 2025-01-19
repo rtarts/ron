@@ -317,29 +317,21 @@ h2 {
 }
 
 /* Fullscreen overlay styles */
+/* Ensure the overlay covers the entire viewport on mobile */
 .fullscreen-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.9); /* Dark background */
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2000;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-}
-
-.fullscreen-overlay img {
-  max-width: 90%;
-  max-height: 90%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  transform: scale(0.8); /* Start smaller */
-  transition: transform 0.3s ease-in-out;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 1000;
 }
 
 .fullscreen-overlay.active {
@@ -347,25 +339,30 @@ h2 {
   visibility: visible;
 }
 
-.fullscreen-overlay.active img {
-  transform: scale(1); /* Smoothly zoom to full size */
+.fullscreen-overlay img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
 }
 
-/* Close button styles */
-.fullscreen-overlay .close-button {
+/* Close button adjustments */
+.close-button {
   position: absolute;
   top: 20px;
   right: 20px;
-  color: white;
-  font-size: 24px;
-  cursor: pointer;
   background: none;
   border: none;
-  outline: none;
-  transition: transform 0.2s ease-in-out;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 1001;
 }
 
-.fullscreen-overlay .close-button:hover {
-  transform: scale(1.2);
+/* Add touch-friendly sizing */
+.close-button:active {
+  transform: scale(0.9);
 }
+
 

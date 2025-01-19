@@ -162,7 +162,8 @@ body {
 
 /* Carousel Styles */
 .carousel-container {
-  position: page;
+  position: relative;
+  overflow: hidden;
   top: 0;
   left: 0;
   width: 100%;
@@ -330,7 +331,7 @@ h2 {
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
-  z-index: 1000;
+  z-index: 9999;
 }
 
 .fullscreen-overlay.active {

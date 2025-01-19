@@ -10,11 +10,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const openFullscreen = (src) => {
         fullscreenImage.src = src;
         fullscreenOverlay.classList.add("active");
+        document.body.style.overflow = "hidden"; // Prevent scrolling
     };
 
     // Function to close fullscreen view
     const closeFullscreen = () => {
         fullscreenOverlay.classList.remove("active");
+        document.body.style.overflow = ""; // Restore scrolling
         setTimeout(() => {
             fullscreenImage.src = ""; // Clear image source for performance
         }, 300);

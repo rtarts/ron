@@ -276,9 +276,95 @@
     *{ transition:none !important; scroll-behavior:auto !important; }
     .item{ opacity:1 !important; transform:none !important; }
   }
+
+  /* ---------- Preloader — aperture reveal ---------- */
+  #preloader{
+    position:fixed; inset:0; z-index:999;
+    background:#050505;
+    display:flex; align-items:center; justify-content:center;
+    transition:opacity 0.6s ease, visibility 0.6s ease;
+  }
+  #preloader.done{ opacity:0; visibility:hidden; pointer-events:none; }
+
+  #preloader .iris-ring{
+    position:absolute; top:50%; left:50%;
+    width:min(60vw, 60vh, 340px);
+    height:min(60vw, 60vh, 340px);
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    border:1px solid var(--line);
+  }
+
+  #preloader .iris-sweep{
+    position:absolute; top:50%; left:50%;
+    width:min(60vw, 60vh, 340px);
+    height:min(60vw, 60vh, 340px);
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    border:1.5px solid var(--acid);
+    clip-path:inset(0 0 0 0 round 50%);
+    animation:sweep 1.6s cubic-bezier(0.65,0,0.35,1) forwards;
+  }
+
+  #preloader .iris-blades{
+    transform-origin:center;
+    animation:blades-open 0.9s cubic-bezier(0.65,0,0.35,1) 1.0s forwards;
+  }
+  #preloader .pl-text{
+    position:relative; z-index:2; text-align:center;
+    font-family:'JetBrains Mono', monospace;
+    color:var(--ink); letter-spacing:0.16em; text-transform:uppercase;
+    font-size:0.78rem;
+  }
+  #preloader .pl-line{ overflow:hidden; height:1.3em; }
+  #preloader .pl-line span{
+    display:block; transform:translateY(100%); opacity:0;
+    animation:line-up 0.7s cubic-bezier(0.16,1,0.3,1) forwards;
+  }
+  #preloader .pl-line:nth-child(1) span{ animation-delay:0.15s; }
+  #preloader .pl-line:nth-child(2) span{
+    animation-delay:0.32s; color:var(--ink-dim);
+    font-size:0.68em; letter-spacing:0.22em; margin-top:0.4em;
+  }
+  #preloader .pl-count{
+    position:absolute; bottom:2.2rem; left:50%; transform:translateX(-50%);
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.68rem; color:var(--ink-dim); letter-spacing:0.1em;
+    animation:idle-pulse 1.4s ease-in-out 2s infinite;
+  }
+  #preloader .pl-count::after{ content:attr(data-pct) '%'; }
+
+  @keyframes sweep{
+    0%{ clip-path:polygon(50% 50%, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%); }
+    12.5%{ clip-path:polygon(50% 50%, 50% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%); }
+    25%{ clip-path:polygon(50% 50%, 50% 0%, 100% 0%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%); }
+    50%{ clip-path:polygon(50% 50%, 50% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 100%, 0% 100%, 0% 100%); }
+    75%{ clip-path:polygon(50% 50%, 50% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 0% 0%, 0% 0%); }
+    100%{ clip-path:polygon(50% 50%, 50% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 50% 0%, 50% 0%); }
+  }
+  @keyframes blades-open{ 0%{ opacity:1; transform:scale(1); } 100%{ opacity:0; transform:scale(1.4); } }
+  @keyframes line-up{ to{ transform:translateY(0); opacity:1; } }
+  @keyframes idle-pulse{ 0%,100%{ opacity:1; } 50%{ opacity:0.35; } }
+
+  @media (prefers-reduced-motion: reduce){
+    #preloader{ display:none; }
+  }
 </style>
 </head>
 <body>
+
+<div id="preloader">
+  <div class="iris-ring"></div>
+  <div class="iris-sweep"></div>
+  <div class="iris-blades">
+    <div class="pl-text">
+      <div class="pl-line"><span>Ronald</span></div>
+      <div class="pl-line"><span>Photo &amp; Video</span></div>
+    </div>
+  </div>
+  <div class="pl-count" id="plCount" data-pct="0"></div>
+</div>
+
 
 <div class="cur" id="cur"></div>
 
@@ -503,6 +589,60 @@ document.addEventListener('mouseover', e=>{
 });
 
 renderGallery();
+</script>
+
+<script>
+(function(){
+  var pre = document.getElementById('preloader');
+  if(!pre) return;
+
+  // Absolute safety net: no matter what else happens in this script,
+  // the preloader is gone within 4.5s.
+  var hardKill = setTimeout(function(){
+    pre.classList.add('done');
+    setTimeout(function(){ if(pre && pre.parentNode) pre.remove(); }, 700);
+  }, 4500);
+
+  try{
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      clearTimeout(hardKill);
+      pre.remove();
+      return;
+    }
+
+    var countEl = document.getElementById('plCount');
+    var pct = 0;
+    var pctTimer = setInterval(function(){
+      pct += Math.random() * 18;
+      if(pct > 96) pct = 96;
+      if(countEl) countEl.setAttribute('data-pct', Math.floor(pct));
+    }, 180);
+
+    var MIN_SHOW = 1700;
+    var MAX_WAIT = 3000;
+    var start = Date.now();
+    var finished = false;
+
+    function finish(){
+      if(finished) return;
+      finished = true;
+      clearInterval(pctTimer);
+      clearTimeout(hardKill);
+      if(countEl) countEl.setAttribute('data-pct', 100);
+      var elapsed = Date.now() - start;
+      var wait = Math.max(0, MIN_SHOW - elapsed);
+      setTimeout(function(){
+        pre.classList.add('done');
+        setTimeout(function(){ if(pre && pre.parentNode) pre.remove(); }, 700);
+      }, wait);
+    }
+
+    window.addEventListener('load', finish);
+    setTimeout(finish, MAX_WAIT);
+  } catch(e){
+    console.error('Preloader error:', e);
+  }
+})();
 </script>
 
 </body>

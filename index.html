@@ -211,8 +211,14 @@
   }
   .lightbox.open{ display:flex; }
 
-  .lb-frame{ position:relative; max-width:100%; max-height:86vh; }
-  .lightbox img, .lightbox video{ max-width:100%; max-height:86vh; display:block; }
+  .lb-frame{
+    position:relative; max-width:100%;
+    display:flex; flex-direction:column; align-items:center;
+    gap:1rem;
+  }
+  .lightbox img, .lightbox video{
+    max-width:100%; max-height:72vh; display:block;
+  }
 
   .lb-index{
     position:absolute; top:-2.6rem; left:0;
@@ -239,8 +245,11 @@
   .lb-next{ right:clamp(0.5rem,2vw,2rem); }
 
   .lb-caption{
-    position:absolute; bottom:-2.6rem; left:0;
-    display:flex; gap:0.8rem; align-items:baseline;
+    display:flex; flex-direction:column; gap:0.3rem;
+    text-align:center; max-width:90vw;
+  }
+  @media (min-width:640px){
+    .lb-caption{ flex-direction:row; gap:0.8rem; align-items:baseline; text-align:left; }
   }
   .lb-caption .t{ font-family:'Instrument Serif', serif; font-style:italic; font-size:1.2rem; }
   .lb-caption .m{ font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:var(--ink-dim); letter-spacing:0.08em; text-transform:uppercase; }
@@ -612,26 +621,30 @@ renderGallery();
 
     var countEl = document.getElementById('plCount');
     var pct = 0;
-    var pctTimer = setInterval(function(){
-      pct += Math.random() * 18;
-      if(pct > 96) pct = 96;
-      if(countEl) countEl.setAttribute('data-pct', Math.floor(pct));
-    }, 180);
-
     var MIN_SHOW = 1700;
     var MAX_WAIT = 3000;
     var start = Date.now();
     var finished = false;
 
+    var pctTimer = setInterval(function(){
+      // climb quickly toward ~90, then crawl — leaves room for the
+      // finish-triggered climb to 100 to still feel like motion
+      var ceiling = finished ? 100 : 90;
+      var step = finished ? Math.random() * 10 + 4 : Math.random() * 14;
+      pct = Math.min(ceiling, pct + step);
+      if(countEl) countEl.setAttribute('data-pct', Math.floor(pct));
+      if(finished && pct >= 100) clearInterval(pctTimer);
+    }, 120);
+
     function finish(){
       if(finished) return;
       finished = true;
-      clearInterval(pctTimer);
       clearTimeout(hardKill);
-      if(countEl) countEl.setAttribute('data-pct', 100);
       var elapsed = Date.now() - start;
       var wait = Math.max(0, MIN_SHOW - elapsed);
       setTimeout(function(){
+        clearInterval(pctTimer);
+        if(countEl) countEl.setAttribute('data-pct', 100);
         pre.classList.add('done');
         setTimeout(function(){ if(pre && pre.parentNode) pre.remove(); }, 700);
       }, wait);

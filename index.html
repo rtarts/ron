@@ -1,121 +1,509 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Photography Portfolio</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="icon" href="joe(1).png" type="image/png">
-  <script src="js/cursor.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ronald — Work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#050505;
+    --ink:#f2f0ec;
+    --ink-dim:#77746c;
+    --line:#232320;
+    --acid:#d7ff3d;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    overflow-x:hidden;
+    cursor:default;
+  }
+
+  @media (hover:hover) and (pointer:fine){
+    *{ cursor:none; }
+  }
+
+  ::selection{ background:var(--acid); color:#050505; }
+
+  .serif{ font-family:'Instrument Serif', serif; font-style:italic; }
+  .mono{ font-family:'JetBrains Mono',monospace; }
+
+  a{ color:inherit; text-decoration:none; }
+
+  .cur{
+    position:fixed; width:8px; height:8px; border-radius:50%;
+    background:var(--acid); pointer-events:none; z-index:999;
+    transform:translate(-50%,-50%);
+    mix-blend-mode:difference;
+    transition:width 0.2s ease, height 0.2s ease;
+    display:none;
+  }
+  @media (hover:hover) and (pointer:fine){ .cur{ display:block; } }
+  .cur.big{ width:60px; height:60px; }
+
+  :root{ --header-h:64px; }
+
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    height:var(--header-h);
+    display:flex; justify-content:space-between; align-items:center;
+    padding:0 clamp(1.2rem,4vw,3rem);
+    background:rgba(5,5,5,0.6);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .mark{ font-size:1rem; font-weight:500; letter-spacing:-0.02em; }
+  .mark span{ color:var(--ink-dim); }
+
+  nav{ display:flex; gap:clamp(1rem,3vw,2rem); }
+  nav button{
+    background:none; border:none; color:var(--ink-dim);
+    font-family:'JetBrains Mono',monospace; font-size:0.7rem;
+    letter-spacing:0.08em; text-transform:uppercase;
+    padding:0.3rem 0;
+  }
+  nav button:hover{ color:var(--ink); }
+
+  .intro{
+    min-height:100svh;
+    display:flex; flex-direction:column; justify-content:center;
+    padding:clamp(6rem,10vh,8rem) clamp(1.2rem,4vw,3rem) 3rem;
+    position:relative;
+  }
+
+  .intro-index{
+    position:absolute; top:1.5rem; right:clamp(1.2rem,4vw,3rem);
+    font-family:'JetBrains Mono',monospace; font-size:0.7rem;
+    color:var(--ink-dim); letter-spacing:0.08em;
+    text-align:right; line-height:1.6;
+  }
+
+  .intro h1{
+    font-size:clamp(3.6rem, 12vw, 11rem);
+    line-height:0.84;
+    font-weight:500;
+    letter-spacing:-0.03em;
+    text-transform:uppercase;
+  }
+  .intro h1 em{
+    font-family:'Instrument Serif', serif;
+    font-style:italic;
+    font-weight:400;
+    color:var(--ink-dim);
+    text-transform:none;
+    font-size:0.85em;
+  }
+
+  .intro-foot{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    margin-top:2.5rem; flex-wrap:wrap; gap:1.5rem;
+    border-top:1px solid var(--line); padding-top:1.5rem;
+  }
+  .intro-foot p{ max-width:38ch; color:var(--ink-dim); font-size:0.95rem; line-height:1.5; }
+  .intro-foot .tag{
+    font-family:'JetBrains Mono',monospace; font-size:0.7rem;
+    letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-dim);
+  }
+
+  .rail{
+    position:sticky; top:var(--header-h); z-index:50;
+    background:rgba(5,5,5,0.82);
+    backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:0.9rem clamp(1.2rem,4vw,3rem);
+    display:flex; align-items:center; justify-content:space-between;
+    gap:1rem;
+  }
+  .filters{ display:flex; gap:1.6rem; }
+  .filter-btn{
+    background:none; border:none;
+    font-family:'JetBrains Mono',monospace; font-size:0.72rem;
+    letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--ink-dim); position:relative; padding-bottom:2px;
+  }
+  .filter-btn::after{
+    content:''; position:absolute; left:0; right:0; bottom:-2px; height:1px;
+    background:var(--acid); transform:scaleX(0); transform-origin:left;
+    transition:transform 0.25s ease;
+  }
+  .filter-btn.active{ color:var(--ink); }
+  .filter-btn.active::after{ transform:scaleX(1); }
+
+  .count{ font-family:'JetBrains Mono',monospace; font-size:0.7rem; color:var(--ink-dim); }
+
+  .gallery{
+    padding:0 clamp(1.2rem,4vw,3rem) 8rem;
+    columns:1;
+    column-gap:0.9rem;
+  }
+  @media (min-width:700px){ .gallery{ columns:2; } }
+  @media (min-width:1100px){ .gallery{ columns:3; } }
+
+  .item{
+    position:relative; overflow:hidden;
+    background:#0e0e0d; border:1px solid var(--line);
+    break-inside:avoid;
+    margin-bottom:0.9rem;
+    opacity:0; transform:translateY(24px);
+    transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+  }
+  .item.in{ opacity:1; transform:none; }
+
+  .item img, .item video{
+    width:100%; display:block; object-fit:cover;
+    transition:transform 0.9s cubic-bezier(0.16,1,0.3,1), filter 0.6s ease;
+  }
+  .item:hover img, .item:hover video{ transform:scale(1.04); filter:grayscale(0) contrast(1.05) brightness(125%); }
+
+  .item-tag{
+    position:absolute; top:0.8rem; left:0.8rem;
+    font-family:'JetBrains Mono',monospace; font-size:0.62rem;
+    letter-spacing:0.1em; text-transform:uppercase;
+    padding:0.25rem 0.5rem;
+    background:rgba(5,5,5,0.6); backdrop-filter:blur(4px);
+    color:var(--ink-dim);
+    opacity:0; transition:opacity 0.3s ease;
+  }
+  .item:hover .item-tag{ opacity:1; }
+
+  .item-num{
+    position:absolute; bottom:0.8rem; left:0.8rem;
+    font-family:'Instrument Serif', serif; font-style:italic;
+    font-size:1.6rem; color:var(--ink);
+    opacity:0; transition:opacity 0.3s ease;
+    text-shadow:0 2px 12px rgba(0,0,0,0.8);
+  }
+  .item:hover .item-num{ opacity:1; }
+
+  .play-badge{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:44px; height:44px; border-radius:50%;
+    border:1px solid rgba(242,240,236,0.4);
+    display:flex; align-items:center; justify-content:center;
+    opacity:0.85; transition:opacity 0.3s ease, transform 0.3s ease;
+  }
+  .item:hover .play-badge{ transform:translate(-50%,-50%) scale(1.1); opacity:1; }
+  .play-badge svg{ width:13px; height:13px; fill:var(--ink); margin-left:2px; }
+
+  .placeholder{
+    aspect-ratio: var(--ar, 4/5);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:0.7rem; color:var(--ink-dim);
+    background:
+      repeating-linear-gradient(135deg, #0e0e0d 0 2px, #111110 2px 14px);
+  }
+  .placeholder svg{ width:22px; height:22px; opacity:0.35; }
+  .placeholder span{ font-family:'JetBrains Mono',monospace; font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; }
+
+  .lightbox{
+    position:fixed; inset:0; z-index:200;
+    background:rgba(3,3,3,0.97);
+    display:none; align-items:center; justify-content:center;
+    padding:5vh 4vw;
+  }
+  .lightbox.open{ display:flex; }
+
+  .lb-frame{ position:relative; max-width:100%; max-height:86vh; }
+  .lightbox img, .lightbox video{ max-width:100%; max-height:86vh; display:block; }
+
+  .lb-index{
+    position:absolute; top:-2.6rem; left:0;
+    font-family:'JetBrains Mono',monospace; font-size:0.75rem;
+    color:var(--ink-dim); letter-spacing:0.06em;
+  }
+  .lb-close{
+    position:fixed; top:1.6rem; right:clamp(1.2rem,4vw,3rem);
+    font-family:'JetBrains Mono',monospace; font-size:0.75rem;
+    letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--ink-dim); background:none; border:none;
+    z-index:201;
+  }
+  .lb-close:hover{ color:var(--ink); }
+
+  .lb-nav{
+    position:fixed; top:50%; transform:translateY(-50%);
+    background:none; border:none; color:var(--ink-dim);
+    font-family:'Instrument Serif', serif; font-style:italic;
+    font-size:2.2rem; z-index:201;
+  }
+  .lb-nav:hover{ color:var(--ink); }
+  .lb-prev{ left:clamp(0.5rem,2vw,2rem); }
+  .lb-next{ right:clamp(0.5rem,2vw,2rem); }
+
+  .lb-caption{
+    position:absolute; bottom:-2.6rem; left:0;
+    display:flex; gap:0.8rem; align-items:baseline;
+  }
+  .lb-caption .t{ font-family:'Instrument Serif', serif; font-style:italic; font-size:1.2rem; }
+  .lb-caption .m{ font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:var(--ink-dim); letter-spacing:0.08em; text-transform:uppercase; }
+
+  .about{
+    padding:5rem clamp(1.2rem,4vw,3rem);
+    border-top:1px solid var(--line);
+    display:grid; grid-template-columns:1fr; gap:2rem;
+  }
+  @media (min-width:900px){ .about{ grid-template-columns:1.4fr 1fr; align-items:end; } }
+
+  .about h2{
+    font-size:clamp(2.4rem,6vw,4.2rem);
+    line-height:0.95; letter-spacing:-0.02em; text-transform:uppercase;
+    font-weight:500;
+  }
+  .about h2 em{ font-family:'Instrument Serif', serif; font-style:italic; color:var(--ink-dim); text-transform:none; }
+
+  .about p{ color:var(--ink-dim); line-height:1.7; max-width:52ch; font-size:0.98rem; }
+
+  footer{
+    padding:2rem clamp(1.2rem,4vw,3rem) 2.5rem;
+    border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap:1rem;
+    font-family:'JetBrains Mono',monospace; font-size:0.68rem;
+    letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-dim);
+  }
+  footer a:hover{ color:var(--ink); }
+  .footer-links{ display:flex; gap:1.4rem; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; scroll-behavior:auto !important; }
+    .item{ opacity:1 !important; transform:none !important; }
+  }
+</style>
 </head>
 <body>
 
-<header class="sticky-header">
-  <p class="hover-target">Ronald Truong.</p>
+<div class="cur" id="cur"></div>
+
+<header>
+  <div class="mark">RONALD <span>/ WORK</span></div>
+  <nav>
+    <button data-scroll="work">Index</button>
+    <button data-scroll="about">About</button>
+  </nav>
 </header>
 
-<div class="container">
-<div class="carousel-container">
-  <div class="carousel">
-    <div class="carousel-slide active">
-      <div class="background-blur" style="background-image: url('AMG1.jpg')"></div>
-      <img src="BMW 330i.jpg" alt="Photo of an BMW">
-    </div>
-    <div class="carousel-slide">
-      <div class="background-blur" style="background-image: url('Lexus1.jpg')"></div>
-      <img src="BMW Steering.jpg" alt="Photo of a Steering Wheel">
-    </div>
-    <div class="carousel-slide">
-      <div class="background-blur" style="background-image: url('Lexus1.jpg')"></div>
-      <img src="Lexus1.jpg" alt="Photo of a Lexus">
-    </div>
-    <div class="carousel-slide">
-      <div class="background-blur" style="background-image: url('Lexus2.jpg')"></div>
-      <img src="Lexus2.jpg" alt="Photo of a Lexus">
-    </div>
-    <div class="carousel-slide">
-      <div class="background-blur" style="background-image: url('AMG1.jpg')"></div>
-      <img src="AMG1.jpg" alt="Photo of an AMG">
-    </div>
-    <div class="carousel-slide">
-      <div class="background-blur" style="background-image: url('BMW1.jpg')"></div>
-      <img src="BMW1.jpg" alt="Photo of a BMW">
-    </div>
-    <div class="carousel-slide">
-      <div class="background-blur" style="background-image: url('BMW2.jpg')"></div>
-      <img src="BMW2.jpg" alt="Photo of a BMW">
-    </div>
-    <div class="carousel-slide">
-      <div class="background-blur" style="background-image: url('M340i.jpg')"></div>
-      <img src="M340i.jpg" alt="Photo of an BMW">
-    </div>
-    <div class="carousel-slide">
-      <div class="background-blur" style="background-image: url('AMG1.jpg')"></div>
-      <img src="BMW 330i.jpg" alt="Photo of an BMW">
+<section class="intro" id="top">
+  <div class="intro-index">
+    GTA, CANADA<br>
+    2023 — 2026
+  </div>
+  <h1>Ronald <em>Truong's</em><br>Portfolio.</h1>
+  <div class="intro-foot">
+    <p>A running index of frames — portraits, street, product, and the odd short clip.</p>
+    <span class="tag">Scroll to browse ↓</span>
+  </div>
+</section>
+
+<div class="rail">
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="photo">Photo</button>
+    <button class="filter-btn" data-filter="video">Video</button>
+  </div>
+  <span class="count" id="itemCount">0</span>
+</div>
+
+<section class="gallery" id="masonry"></section>
+
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose">Close</button>
+  <button class="lb-nav lb-prev" id="lbPrev">‹</button>
+  <button class="lb-nav lb-next" id="lbNext">›</button>
+  <div class="lb-frame">
+    <div class="lb-index" id="lbIndex"></div>
+    <div id="lbMedia"></div>
+    <div class="lb-caption">
+      <span class="t" id="lbTitle"></span>
+      <span class="m" id="lbMeta"></span>
     </div>
   </div>
 </div>
 
-<div class="content-overlay">
-  <h1 class="hover-target">Ronald's Portfolio</h1>
-</div>
+<section class="about" id="about">
+  <h2>Shot on<br>whatever<br><em>gets it done.</em></h2>
+  <p>Welcome to my website! I'm Ronald — based in the GTA, working across photo and video.
+    Whether it's nature, machinery, portraits, I got the shot.</p>
+</section>
 
-<div class="spacer"><h1 class="masonry-title hover-target">My Photos.</h1></div>
-
-  <div class="masonry-grid">
-    <div class="masonry-item hover-target" style="grid-row: span 2; grid-column: span 2;">
-      <img class="photo" src="Audi1.jpg" alt="Photo 1">
-    </div>
-    <div class="masonry-item hover-target" style="grid-row: span 3; grid-column: span 3;">
-      <img class="photo" src="Audi2.jpg" alt="Photo 2">
-    </div>
-    <div class="masonry-item hover-target" style="grid-row: span 3; grid-column: span 3;">
-      <img class="photo" src="Bus.jpg" alt="Photo 3">
-    </div>
-    <div class="masonry-item hover-target" style="grid-row: span 2; grid-column: span 2;">
-      <img class="photo" src="Ferrari1.jpg" alt="Photo 4">
-    </div>
-    <div class="masonry-item hover-target" style="grid-row: span 2; grid-column: span 2;">
-      <img class="photo" src="Hayabusa.jpg" alt="Photo 5">
-    </div>
-    <div class="masonry-item hover-target" style="grid-row: span 3; grid-column: span 2;">
-      <img class="photo" src="Porsche1.jpg" alt="Photo 6">
-    </div>
-    <div class="masonry-item hover-target" style="grid-row: span 3; grid-column: span 3;">
-      <img class="photo" src="Porsche2.jpg" alt="Photo 7">
-    </div>
-    <div class="masonry-item hover-target" style="grid-row: span 3; grid-column: span 2;">
-      <img class="photo" src="Lexus3.jpg" alt="Photo 8">
-    </div>
-    <div class="masonry-item hover-target" style="grid-row: span 3; grid-column: span 2;">
-      <img class="photo" src="Lexus4.jpg" alt="Photo 9">
-    </div>
-    <div class="masonry-item hover-target" style="grid-row: span 6; grid-column: span 4;">
-      <img class="photo" src="BMW HL.jpg" alt="Photo 10">
-    </div>
-    <div class="masonry-item hover-target" style="grid-row: span 4; grid-column: span 3;">
-      <img class="photo" src="Cooper Vertical.jpg" alt="Photo 11">
-    </div>
+<footer>
+  <span>© 2026</span>
+  <div class="footer-links">
+    <a href="#">Instagram</a>
   </div>
+</footer>
 
+<script>
+/* =========================================================
+   CONTENT CONFIG
+   =========================================================
+   Each item:
+   {
+     type: "photo" | "video",
+     src:  "photos/file.jpg" (or .mp4),
+     poster: "photos/thumb.jpg"  (optional, video only),
+     title: "Name",
+     meta:  "Category — Year",
+     ar:    "4/5",                 // aspect ratio for the tile
+     size:  "normal" | "wide" | "narrow"   // grid shape, optional
+   }
 
-<div class="bio-container"><p class="bio hover-target">I'm an automotive photographer who loves capturing the beauty and
-  soul of cars. My goal is to create images that evoke emotion and help you relive those special moments. More to come.</p></div>
+   TO ADD YOUR OWN WORK:
+   1. Make a folder "photos" next to this index.html
+   2. Drop files in
+   3. Point src at them, delete/replace placeholder entries below
 
-<div class="spacer"></div>
+   PERFORMANCE NOTE:
+   Grid thumbnails already lazy-load and decode off the main thread,
+   but the biggest win is the source file itself — a straight-off-phone
+   photo can be 12+ MP / 8-15MB, way bigger than any tile on this page
+   ever renders. Before dropping files in /photos, resize the long edge
+   to ~2000px (plenty sharp even in the lightbox) and export as JPEG
+   quality ~80 or WebP. Keeps every tile fast without touching this code.
+   ========================================================= */
 
-</div>
+const ITEMS = [
+  { type:"photo", src:"img/Flower BW.jpg", title:"B&W Macro Flower", meta:"Black and White Photo of a blooming flower — 2026", ar:"4/3", size:"wide"},
+  { type:"photo", src:"img/Keyboard Macro.jpg", title:"Keyboard Macro", meta:"Macro shot of a keyboard — 2026", ar:"2/3", size:"wide" },
+  { type:"photo", src:"img/Light and Shadow.jpg", title:"Light & Shadow", meta:"Corner of a window showing a play on light and shadow — 2026", ar:"4/3" },
+  { type:"photo", src:"img/Square Light.jpg", title:"B&W Light", meta:"Black and White grainy photo of a light post — 2026", ar:"1/1", size:"wide" },
+  { type:"photo", src:"img/Wheat.jpg", title:"Wheat", meta:"Literally Wheat — 2026", ar:"4/3" },
+  { type:"photo", src:"img/House.jpg", title:"House", meta:"A House in the Sunset — 2026", ar:"649/783" },
+  { type:"photo", src:"img/Under the Lights.jpg", title:"Playing Under the Lights", meta:"World Cup 2026 ball under the lights — 2026", ar:"4/3"},
+  { type:"photo", src:"img/Tiny Flower Macro.jpg", title:"Pink Flower Tele-Macro", meta:"Blooming garden flower — 2026", ar:"3/4" },
+  { type:"photo", src:"img/Tree Shot.jpg", title:"Asian Pear Tree", meta:"Telephoto shot of garden pears — 2026", ar:"512/443" }
+];
 
-<div class="footer"><h2 class="hover-target">Ronald Truong</h2>
-<div class="text-container"><span>Based in Vaughan.</span><span>2025</span></div></div>
-<script src="js/footer scroll.js"></script>
+const masonry = document.getElementById('masonry');
+const itemCount = document.getElementById('itemCount');
+let currentFilter = 'all';
 
-<script src="js/script.js"></script>
-<script src="js/scroll grid.js"></script>
-<script src="js/fullscreen.js"></script>
-<div class="fullscreen-overlay" id="fullscreenOverlay">
-  <button class="close-button" id="closeButton">✖</button>
-  <img id="fullscreenImage" src="" alt="Fullscreen View">
-</div>
+function placeholderSVG(type){
+  return type === 'video'
+    ? `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`
+    : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>`;
+}
+
+function renderGallery(){
+  masonry.innerHTML = '';
+  const filtered = ITEMS.filter(i => currentFilter === 'all' || i.type === currentFilter);
+  itemCount.textContent = filtered.length;
+
+  filtered.forEach((item) => {
+    const realIndex = ITEMS.indexOf(item);
+    const el = document.createElement('div');
+    el.className = 'item';
+    el.dataset.index = realIndex;
+
+    const numLabel = String(realIndex + 1).padStart(2,'0');
+
+    if(!item.src){
+      el.innerHTML = `
+        <div class="placeholder" style="--ar:${item.ar || '4/5'}">
+          ${placeholderSVG(item.type)}
+          <span>${item.type === 'video' ? 'Video pending' : 'Image pending'}</span>
+        </div>`;
+    } else if(item.type === 'video'){
+      el.innerHTML = `
+        <video src="${item.src}" poster="${item.poster || ''}" muted preload="metadata" style="aspect-ratio:${item.ar || '4/5'}"></video>
+        <span class="item-tag">Video</span>
+        <div class="play-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <span class="item-num">${numLabel}</span>`;
+    } else {
+      el.innerHTML = `
+        <img src="${item.src}" alt="${item.title}" loading="lazy" decoding="async" fetchpriority="low" style="aspect-ratio:${item.ar || '4/5'}">
+        <span class="item-tag">Photo</span>
+        <span class="item-num">${numLabel}</span>`;
+    }
+
+    el.addEventListener('click', () => openLightbox(realIndex));
+    masonry.appendChild(el);
+  });
+
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(en => { if(en.isIntersecting){ en.target.classList.add('in'); obs.unobserve(en.target); } });
+  }, { threshold:0.1 });
+  document.querySelectorAll('.item').forEach(el => obs.observe(el));
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    renderGallery();
+  });
+});
+
+document.querySelectorAll('[data-scroll]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const id = btn.dataset.scroll;
+    document.getElementById(id)?.scrollIntoView({behavior:'smooth'});
+  });
+});
+
+const lightbox = document.getElementById('lightbox');
+const lbMedia = document.getElementById('lbMedia');
+const lbTitle = document.getElementById('lbTitle');
+const lbMeta = document.getElementById('lbMeta');
+const lbIndexEl = document.getElementById('lbIndex');
+let lbIndex = 0;
+
+function openLightbox(index){
+  const item = ITEMS[index];
+  if(!item.src) return;
+  lbIndex = index;
+  renderLightboxMedia(item);
+  lightbox.classList.add('open');
+}
+
+function renderLightboxMedia(item){
+  const idx = ITEMS.indexOf(item);
+  lbMedia.innerHTML = item.type === 'video'
+    ? `<video src="${item.src}" controls autoplay></video>`
+    : `<img src="${item.src}" alt="${item.title}">`;
+  lbTitle.textContent = item.title;
+  lbMeta.textContent = item.meta;
+  lbIndexEl.textContent = String(idx+1).padStart(2,'0') + ' / ' + String(ITEMS.length).padStart(2,'0');
+}
+
+function closeLightbox(){ lightbox.classList.remove('open'); lbMedia.innerHTML=''; }
+
+function stepLightbox(dir){
+  let next = lbIndex;
+  do { next = (next + dir + ITEMS.length) % ITEMS.length; } while(!ITEMS[next].src && next !== lbIndex);
+  if(ITEMS[next].src){ lbIndex = next; renderLightboxMedia(ITEMS[lbIndex]); }
+}
+
+document.getElementById('lbClose').addEventListener('click', closeLightbox);
+document.getElementById('lbPrev').addEventListener('click', ()=>stepLightbox(-1));
+document.getElementById('lbNext').addEventListener('click', ()=>stepLightbox(1));
+lightbox.addEventListener('click', e => { if(e.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', e => {
+  if(!lightbox.classList.contains('open')) return;
+  if(e.key === 'Escape') closeLightbox();
+  if(e.key === 'ArrowLeft') stepLightbox(-1);
+  if(e.key === 'ArrowRight') stepLightbox(1);
+});
+
+const cur = document.getElementById('cur');
+window.addEventListener('mousemove', e=>{
+  cur.style.left = e.clientX + 'px';
+  cur.style.top = e.clientY + 'px';
+});
+document.addEventListener('mouseover', e=>{
+  cur.classList.toggle('big', !!e.target.closest('.item, .lb-nav, .filter-btn, nav button'));
+});
+
+renderGallery();
+</script>
+
 </body>
 </html>

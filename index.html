@@ -713,14 +713,41 @@
     lightbox.classList.add('open');
   }
 
+  let pendingUnmuteHandler = null;
+
   function renderLightboxMedia(item){
     const idx = ITEMS.indexOf(item);
+
+    // clear any unmute listener left over from a previously opened video
+    if(pendingUnmuteHandler){
+      document.removeEventListener('click', pendingUnmuteHandler);
+      document.removeEventListener('keydown', pendingUnmuteHandler);
+      pendingUnmuteHandler = null;
+    }
+
     lbMedia.innerHTML = item.type === 'video'
-            ? `<video src="${item.src}" controls autoplay></video>`
+            ? `<video src="${item.src}" controls autoplay muted></video>`
             : `<img src="${item.src}" alt="${item.title}" class="zoomable">`;
     lbTitle.textContent = item.title;
     lbMeta.textContent = item.meta;
     lbIndexEl.textContent = String(idx+1).padStart(2,'0') + ' / ' + String(ITEMS.length).padStart(2,'0');
+
+    if(item.type === 'video'){
+      const video = lbMedia.querySelector('video');
+      video.volume = 0.25;
+      // browsers block audible autoplay outright, so it starts muted —
+      // the moment the person interacts with the page at all, unmute it
+      // at the quiet volume we just set, rather than making them hunt
+      // for the speaker icon
+      pendingUnmuteHandler = () => {
+        if(video.isConnected){ video.muted = false; }
+        document.removeEventListener('click', pendingUnmuteHandler);
+        document.removeEventListener('keydown', pendingUnmuteHandler);
+        pendingUnmuteHandler = null;
+      };
+      document.addEventListener('click', pendingUnmuteHandler);
+      document.addEventListener('keydown', pendingUnmuteHandler);
+    }
 
     resetZoom();
     currentImg = item.type === 'photo' ? lbMedia.querySelector('img') : null;
@@ -800,6 +827,11 @@
     lbMedia.innerHTML='';
     currentImg = null;
     resetZoom();
+    if(pendingUnmuteHandler){
+      document.removeEventListener('click', pendingUnmuteHandler);
+      document.removeEventListener('keydown', pendingUnmuteHandler);
+      pendingUnmuteHandler = null;
+    }
   }
 
   function stepLightbox(dir){
